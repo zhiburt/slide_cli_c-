@@ -1,0 +1,29 @@
+@bg_color1: SlateBlue
+---
+
+# Slide powered by CLI/C++
+
+---
+
+## The project was developed by Denis
+
+A huge chunk of information here ...............
+................................................
+................................................
+................................................
+................................................
+................................................
+
+### All copyrigthing rights is reserved
+
+# SOMETHING HERE ONE MORE TIME
+
+---
+
+# BNTU
+
+
+      
+
+[image](C:\1.png)
+
