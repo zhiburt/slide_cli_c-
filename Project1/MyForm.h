@@ -29,7 +29,8 @@ namespace Project1 {
 			//
 			//TODO: добавьте код конструктора
 			//
-		}
+			MyForm_SizeChanged(nullptr, nullptr);
+		}	
 
 	protected:
 		/// <summary>
@@ -81,11 +82,11 @@ namespace Project1 {
 			this->richTextBox1->Size = System::Drawing::Size(617, 423);
 			this->richTextBox1->TabIndex = 0;
 			this->richTextBox1->Text = L"";
+			this->richTextBox1->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox1_Enter);
+			this->richTextBox1->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::richTextBox1_KeyDown);
 			// 
 			// button1
 			// 
-			this->button1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->button1->Enabled = false;
 			this->button1->Location = System::Drawing::Point(210, 441);
 			this->button1->Name = L"button1";
@@ -97,8 +98,6 @@ namespace Project1 {
 			// 
 			// button2
 			// 
-			this->button2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->button2->Enabled = false;
 			this->button2->Location = System::Drawing::Point(372, 441);
 			this->button2->Name = L"button2";
@@ -110,13 +109,11 @@ namespace Project1 {
 			// 
 			// button3
 			// 
-			this->button3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->button3->Location = System::Drawing::Point(291, 441);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(75, 23);
 			this->button3->TabIndex = 3;
-			this->button3->Text = L"try";
+			this->button3->Text = L"open";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
@@ -133,8 +130,12 @@ namespace Project1 {
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->richTextBox1);
+			this->KeyPreview = true;
+			this->MinimumSize = System::Drawing::Size(600, 500);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			this->SizeChanged += gcnew System::EventHandler(this, &MyForm::MyForm_SizeChanged);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
 			this->ResumeLayout(false);
 
 		}
@@ -171,7 +172,7 @@ namespace Project1 {
 			return;
 		}
 		else if (current_slide > 0) {
-			ops = TryOptions(slides[current_slide-1]);
+			ops = TryOptions(slides[current_slide - 1]);
 			if (ops) {
 				ApplyOptions(ops);
 			}
@@ -342,5 +343,44 @@ namespace Project1 {
 	private: int current_slide;
 	private: Options^ global_cfg;
 	private: Options^ current_cfg;
-	};
+	private: System::Void MyForm_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
+		Centered(button3, 0);
+		Centered(button1, -(button1->Width + 10));
+		Centered(button2, +(button2->Width + 10));
+	}
+
+	private: System::Void Centered(Control^ ctrl, int ident)
+	{
+		//ctrl->Left = ident + (ctrl->Parent->Width - ctrl->Width) / 2;
+		ctrl->Location = Point(ident + (ctrl->Parent->Width - ctrl->Width) / 2, richTextBox1->Height + 15);
+	}
+	private: System::Void richTextBox1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+
+	}
+private: System::Void richTextBox1_Enter(System::Object^ sender, System::EventArgs^ e) {
+	this->ActiveControl = nullptr;
+}
+private: System::Void MyForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	e->Handled = true;
+
+	if (slides == nullptr) {
+		return;
+	}
+
+	switch (e->KeyData)
+	{
+	case Keys::S:
+	{
+		button1_Click(sender, e);
+		break;
+	}
+	case Keys::W:
+	{
+		button2_Click(sender, e);
+		break;
+	}
+	default: break;
+	}
+}
+};
 }
